@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "livre.h"
 #include "catalogue.h"
@@ -7,6 +8,18 @@
 #include "ui.h"
 
 #define CHEMIN_DONNEES "data/bibliotheque.txt"
+#define ANNEE_MIN      1000
+#define ANNEE_MAX      2100
+
+static int doublon_existe(const Bibliotheque *b, const char *titre, const char *auteur)
+{
+    for (int i = 0; i < b->nb; i++) {
+        if (strcmp(b->livres[i].titre, titre) == 0 &&
+            strcmp(b->livres[i].auteur, auteur) == 0)
+            return 1;
+    }
+    return 0;
+}
 
 int main(void)
 {
@@ -22,11 +35,32 @@ int main(void)
         switch (choix) {
             case 1: {
                 Livre nouveau;
-                ui_lire_chaine("Titre   : ", nouveau.titre,  MAX_TITRE);
-                ui_lire_chaine("Auteur  : ", nouveau.auteur, MAX_AUTEUR);
-                nouveau.annee      = ui_lire_entier("Annee   : ");
-                nouveau.disponible = 1;
 
+                ui_lire_chaine("Titre   : ", nouveau.titre, MAX_TITRE);
+                if (strlen(nouveau.titre) == 0) {
+                    printf("Erreur : le titre ne peut pas etre vide.\n");
+                    break;
+                }
+
+                ui_lire_chaine("Auteur  : ", nouveau.auteur, MAX_AUTEUR);
+                if (strlen(nouveau.auteur) == 0) {
+                    printf("Erreur : l'auteur ne peut pas etre vide.\n");
+                    break;
+                }
+
+                nouveau.annee = ui_lire_entier("Annee   : ");
+                if (nouveau.annee < ANNEE_MIN || nouveau.annee > ANNEE_MAX) {
+                    printf("Erreur : annee invalide (entre %d et %d).\n",
+                           ANNEE_MIN, ANNEE_MAX);
+                    break;
+                }
+
+                if (doublon_existe(&b, nouveau.titre, nouveau.auteur)) {
+                    printf("Erreur : ce livre existe deja dans la bibliotheque.\n");
+                    break;
+                }
+
+                nouveau.disponible = 1;
                 if (catalogue_ajouter(&b, nouveau))
                     printf("Livre ajoute avec succes.\n");
                 else
@@ -51,10 +85,23 @@ int main(void)
                 }
                 catalogue_afficher(&b);
                 int index = ui_lire_entier("Numero du livre a supprimer : ");
+
+                if (index < 1 || index > b.nb) {
+                    printf("Erreur : numero invalide (entre 1 et %d).\n", b.nb);
+                    break;
+                }
+
+                char confirm[4];
+                ui_lire_chaine("Confirmer la suppression ? (o/n) : ", confirm, sizeof(confirm));
+                if (confirm[0] != 'o' && confirm[0] != 'O') {
+                    printf("Suppression annulee.\n");
+                    break;
+                }
+
                 if (catalogue_supprimer(&b, index - 1))
                     printf("Livre supprime avec succes.\n");
                 else
-                    printf("Erreur : numero invalide.\n");
+                    printf("Erreur : suppression impossible.\n");
                 break;
             }
             case 6:
@@ -62,7 +109,7 @@ int main(void)
                 printf("Sauvegarde effectuee. Au revoir !\n");
                 break;
             default:
-                printf("Choix invalide.\n");
+                printf("Choix invalide (entrez un nombre entre 1 et 6).\n");
         }
     } while (choix != 6);
 
