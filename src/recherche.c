@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include "recherche.h"
 
+/* convertit src en minuscules dans dst, pour la recherche insensible pour casse */
 static void to_lower(char *dst, const char *src, int taille)
 {
     int i;
@@ -22,6 +23,7 @@ int recherche_par_terme(const Bibliotheque *b, const char *terme)
         to_lower(titre_low,  b->livres[i].titre,  sizeof(titre_low));
         to_lower(auteur_low, b->livres[i].auteur, sizeof(auteur_low));
 
+        /* recherche partielle : le terme peut etre dans le titre ou l'auteur */
         if (strstr(titre_low, terme_low) || strstr(auteur_low, terme_low)) {
             printf("%d. %s — %s (%d) [%s]\n",
                 i + 1,
@@ -46,6 +48,7 @@ int recherche_changer_statut(Bibliotheque *b, int index)
     if (index < 0 || index >= b->nb)
         return 0;
 
+    /* bascule disponible <-> emprunte */
     b->livres[index].disponible = !b->livres[index].disponible;
 
     printf("Statut mis a jour : %s est maintenant %s.\n",

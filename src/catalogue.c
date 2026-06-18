@@ -1,9 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "catalogue.h"
 
 #define CAPACITE_INITIALE 4
+#define COL_TITRE         28
+#define COL_AUTEUR        23
+
+/* Affiche une chaine tronquee a max caracteres avec padding */
+static void afficher_col(const char *str, int max)
+{
+    int len = (int)strlen(str);
+    if (len > max) {
+        printf("%-.*s... ", max - 3, str);
+    } else {
+        printf("%-*s ", max, str);
+    }
+}
 
 void catalogue_init(Bibliotheque *b)
 {
@@ -43,16 +57,26 @@ void catalogue_afficher(const Bibliotheque *b)
         printf("Aucun livre dans la bibliotheque.\n");
         return;
     }
-    printf("\n%-4s %-30s %-25s %-6s %s\n", "N°", "Titre", "Auteur", "Annee", "Statut");
-    printf("--------------------------------------------------------------------\n");
+
+    printf("\n%-4s %-*s %-*s %-6s %s\n",
+        "N°", COL_TITRE, "Titre", COL_AUTEUR, "Auteur", "Annee", "Statut");
+    printf("------------------------------------------------------------------------\n");
+
+    int nb_disponibles = 0;
     for (int i = 0; i < b->nb; i++) {
-        printf("%-4d %-30s %-25s %-6d %s\n",
-            i + 1,
-            b->livres[i].titre,
-            b->livres[i].auteur,
+        printf("%-4d ", i + 1);
+        afficher_col(b->livres[i].titre,  COL_TITRE);
+        afficher_col(b->livres[i].auteur, COL_AUTEUR);
+        printf("%-6d %s\n",
             b->livres[i].annee,
             b->livres[i].disponible ? "Disponible" : "Emprunte");
+        if (b->livres[i].disponible)
+            nb_disponibles++;
     }
+
+    printf("------------------------------------------------------------------------\n");
+    printf("%d livre(s) au total  |  %d disponible(s)  |  %d emprunte(s)\n",
+        b->nb, nb_disponibles, b->nb - nb_disponibles);
     printf("\n");
 }
 
