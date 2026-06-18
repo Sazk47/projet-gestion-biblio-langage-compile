@@ -65,7 +65,7 @@ int main(void)
 
                 nouveau.disponible = 1;
                 if (catalogue_ajouter(&b, nouveau))
-                    printf("Livre ajoute avec succes.\n");
+                    printf("Livre ajouté avec succes.\n");
                 else
                     printf("Erreur : impossible d'ajouter le livre.\n");
                 ui_pause();
@@ -75,14 +75,35 @@ int main(void)
                 catalogue_afficher(&b);
                 ui_pause();
                 break;
-            case 3:
-                printf("[3] Rechercher — a implementer\n");
+            case 3: {
+                char terme[100];
+                ui_lire_chaine("Titre ou auteur : ", terme, sizeof(terme));
+                if (strlen(terme) == 0) {
+                    printf("Erreur : le terme ne peut pas etre vide.\n");
+                    ui_pause();
+                    break;
+                }
+                recherche_par_terme(&b, terme);
                 ui_pause();
                 break;
-            case 4:
-                printf("[4] Emprunter / Rendre — a implementer\n");
+            }
+            case 4: {
+                if (b.nb == 0) {
+                    printf("Aucun livre dans la bibliotheque.\n");
+                    ui_pause();
+                    break;
+                }
+                catalogue_afficher(&b);
+                int idx = ui_lire_entier("Numero du livre : ");
+                if (idx < 1 || idx > b.nb) {
+                    printf("Erreur : numero invalide (entre 1 et %d).\n", b.nb);
+                    ui_pause();
+                    break;
+                }
+                recherche_changer_statut(&b, idx - 1);
                 ui_pause();
                 break;
+            }
             case 5: {
                 if (b.nb == 0) {
                     printf("Aucun livre a supprimer.\n");
@@ -91,23 +112,20 @@ int main(void)
                 }
                 catalogue_afficher(&b);
                 int index = ui_lire_entier("Numero du livre a supprimer : ");
-
                 if (index < 1 || index > b.nb) {
                     printf("Erreur : numero invalide (entre 1 et %d).\n", b.nb);
                     ui_pause();
                     break;
                 }
-
                 char confirm[4];
-                ui_lire_chaine("Confirmer la suppression ? (o/n) : ", confirm, sizeof(confirm));
+                ui_lire_chaine("Confirmer la suppréssion ? (o/n) : ", confirm, sizeof(confirm));
                 if (confirm[0] != 'o' && confirm[0] != 'O') {
-                    printf("Suppression annulee.\n");
+                    printf("Suppression annulée.\n");
                     ui_pause();
                     break;
                 }
-
                 if (catalogue_supprimer(&b, index - 1))
-                    printf("Livre supprime avec succes.\n");
+                    printf("Livre supprimé avec succes.\n");
                 else
                     printf("Erreur : suppression impossible.\n");
                 ui_pause();
@@ -115,7 +133,7 @@ int main(void)
             }
             case 6:
                 persistance_sauvegarder(&b, CHEMIN_DONNEES);
-                printf("Sauvegarde effectuee. Au revoir !\n");
+                printf("Sauvegarde effectuée. Au revoir !\n");
                 break;
             default:
                 printf("Choix invalide (entrez un nombre entre 1 et 6).\n");
