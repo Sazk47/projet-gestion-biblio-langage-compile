@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "ui.h"
 
@@ -16,29 +16,25 @@ void ui_afficher_menu(void)
     printf("6. Sauvegarder et quitter\n");
 }
 
-int ui_lire_entier(const char *invite)
-{
-    int valeur = 0;
-    printf("%s", invite);
-    if (scanf("%d", &valeur) != 1) {
-        valeur = -1;
-    }
-    while (getchar() != '\n' && !feof(stdin)) {}
-    return valeur;
-}
-
 void ui_lire_chaine(const char *invite, char *dest, int taille)
 {
     printf("%s", invite);
-    if (fgets(dest, taille, stdin)) {
-        dest[strcspn(dest, "\n")] = '\0';
-    } else {
+    if (fgets(dest, taille, stdin) == NULL) {
         dest[0] = '\0';
+        return;
     }
+    dest[strcspn(dest, "\n")] = '\0';
+}
+
+int ui_lire_entier(const char *invite)
+{
+    char buf[32];
+    ui_lire_chaine(invite, buf, sizeof(buf));
+    return atoi(buf);
 }
 
 void ui_pause(void)
 {
     printf("\nAppuyez sur Entree pour continuer...");
-    while (getchar() != '\n' && !feof(stdin)) {}
+    getchar();
 }
