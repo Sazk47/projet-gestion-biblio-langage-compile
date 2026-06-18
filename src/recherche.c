@@ -50,7 +50,7 @@ int recherche_changer_statut(Bibliotheque *b, int index)
     b->livres[index].disponible = !b->livres[index].disponible;
 
     printf("Statut mis a jour : %s est maintenant %s.\n",
-            b->livres[index].titre,
-            b->livres[index].disponible ? "disponible" : "emprunte");
+        b->livres[index].titre,
+        b->livres[index].disponible ? "disponible" : "emprunte");
     return 1;
 }
