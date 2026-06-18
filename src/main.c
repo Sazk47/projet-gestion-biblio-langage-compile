@@ -55,7 +55,7 @@ int main(void)
                 nouveau.annee = ui_lire_entier("Annee   : ");
                 if (nouveau.annee < ANNEE_MIN || nouveau.annee > ANNEE_MAX) {
                     printf("Erreur : annee invalide (entre %d et %d).\n",
-                           ANNEE_MIN, ANNEE_MAX);
+                        ANNEE_MIN, ANNEE_MAX);
                     break;
                 }
 
@@ -76,12 +76,29 @@ int main(void)
                 catalogue_afficher(&b);
                 break;
             case 3:
-                /* TODO (B) */
-                printf("[3] Rechercher — a implementer\n");
+                char terme[100];
+                ui_lire_chaine("Entrez un titre ou auteur : ", terme, sizeof(terme));
+                if (strlen(terme) == 0) {
+                    printf("Erreur : le terme ne peut pas etre vide.\n");
+                    break;
+                }
+                recherche_par_terme(&b, terme);
                 break;
             case 4:
-                /* TODO (B) */
-                printf("[4] Emprunter / Rendre — a implementer\n");
+                if (b.nb == 0) {
+                    printf("Aucun livre dans la bibliotheque.\n");
+                    break;
+                }
+                catalogue_afficher(&b);
+                int index = ui_lire_entier("Numero du livre : ");
+                
+                /* Validation de l'index */
+                if (index < 1 || index > b.nb) {
+                    printf("Erreur : numero invalide (entre 1 et %d).\n", b.nb);
+                    break;
+                }
+                
+                recherche_changer_statut(&b, index - 1);
                 break;
             case 5: {
                 if (b.nb == 0) {

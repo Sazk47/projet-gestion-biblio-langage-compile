@@ -28,7 +28,7 @@ int persistance_charger(Bibliotheque *b, const char *chemin)
 {
     FILE *f = fopen(chemin, "r");
     if (f == NULL)
-        return 0;   /* pas d'erreur, juste premier lancement */
+        return 0;
 
     char ligne[256];
     while (fgets(ligne, sizeof(ligne), f)) {
