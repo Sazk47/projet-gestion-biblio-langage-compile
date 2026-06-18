@@ -1,21 +1,32 @@
-CC = gcc
-CFLAGS = -Wall -Wextra -g -std=c11 -Iinclude
+CC      = gcc
+CFLAGS  = -Wall -Wextra -std=c11 -Iinclude
 
-SRCS = src/main.c src/catalogue.c src/recherche.c src/persistance.c src/ui.c
-OBJS = $(SRCS:src/%.c=build/%.o)
-TARGET = bin/bibliotheque
+SRC_DIR   = src
+BUILD_DIR = build
+BIN_DIR   = bin
+TARGET    = $(BIN_DIR)/bibliotheque
+
+SRCS = $(wildcard $(SRC_DIR)/*.c)
+OBJS = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRCS))
 
 all: $(TARGET)
 
-$(TARGET): $(OBJS)
-	@mkdir -p bin
-	$(CC) $(CFLAGS) -o $@ $^
+$(TARGET): $(OBJS) | $(BIN_DIR)
+	$(CC) $(CFLAGS) -o $@ $(OBJS)
 
-build/%.o: src/%.c
-	@mkdir -p build
-	$(CC) $(CFLAGS) -c -o $@ $<
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
+
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
+
+run: all
+	./$(TARGET)
 
 clean:
-	rm -rf build bin
+	rm -rf $(BUILD_DIR) $(BIN_DIR)
 
-.PHONY: all clean
+.PHONY: all run clean
