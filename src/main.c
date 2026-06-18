@@ -11,7 +11,6 @@
 #define ANNEE_MIN      1000
 #define ANNEE_MAX      2100
 
-/* Retourne 1 si un livre avec le meme titre ET auteur existe deja */
 static int doublon_existe(const Bibliotheque *b, const char *titre, const char *auteur)
 {
     for (int i = 0; i < b->nb; i++) {
@@ -37,31 +36,30 @@ int main(void)
             case 1: {
                 Livre nouveau;
 
-                /* Titre : refus si vide */
                 ui_lire_chaine("Titre   : ", nouveau.titre, MAX_TITRE);
                 if (strlen(nouveau.titre) == 0) {
                     printf("Erreur : le titre ne peut pas etre vide.\n");
+                    ui_pause();
                     break;
                 }
 
-                /* Auteur : refus si vide */
                 ui_lire_chaine("Auteur  : ", nouveau.auteur, MAX_AUTEUR);
                 if (strlen(nouveau.auteur) == 0) {
                     printf("Erreur : l'auteur ne peut pas etre vide.\n");
+                    ui_pause();
                     break;
                 }
 
-                /* Annee : doit etre entre ANNEE_MIN et ANNEE_MAX */
                 nouveau.annee = ui_lire_entier("Annee   : ");
                 if (nouveau.annee < ANNEE_MIN || nouveau.annee > ANNEE_MAX) {
-                    printf("Erreur : annee invalide (entre %d et %d).\n",
-                           ANNEE_MIN, ANNEE_MAX);
+                    printf("Erreur : annee invalide (entre %d et %d).\n", ANNEE_MIN, ANNEE_MAX);
+                    ui_pause();
                     break;
                 }
 
-                /* Doublon : meme titre + meme auteur */
                 if (doublon_existe(&b, nouveau.titre, nouveau.auteur)) {
                     printf("Erreur : ce livre existe deja dans la bibliotheque.\n");
+                    ui_pause();
                     break;
                 }
 
@@ -70,38 +68,41 @@ int main(void)
                     printf("Livre ajoute avec succes.\n");
                 else
                     printf("Erreur : impossible d'ajouter le livre.\n");
+                ui_pause();
                 break;
             }
             case 2:
                 catalogue_afficher(&b);
+                ui_pause();
                 break;
             case 3:
-                /* TODO (B) */
                 printf("[3] Rechercher — a implementer\n");
+                ui_pause();
                 break;
             case 4:
-                /* TODO (B) */
                 printf("[4] Emprunter / Rendre — a implementer\n");
+                ui_pause();
                 break;
             case 5: {
                 if (b.nb == 0) {
                     printf("Aucun livre a supprimer.\n");
+                    ui_pause();
                     break;
                 }
                 catalogue_afficher(&b);
                 int index = ui_lire_entier("Numero du livre a supprimer : ");
 
-                /* Validation de l'index avant suppression */
                 if (index < 1 || index > b.nb) {
                     printf("Erreur : numero invalide (entre 1 et %d).\n", b.nb);
+                    ui_pause();
                     break;
                 }
 
-                /* Confirmation */
                 char confirm[4];
                 ui_lire_chaine("Confirmer la suppression ? (o/n) : ", confirm, sizeof(confirm));
                 if (confirm[0] != 'o' && confirm[0] != 'O') {
                     printf("Suppression annulee.\n");
+                    ui_pause();
                     break;
                 }
 
@@ -109,6 +110,7 @@ int main(void)
                     printf("Livre supprime avec succes.\n");
                 else
                     printf("Erreur : suppression impossible.\n");
+                ui_pause();
                 break;
             }
             case 6:
@@ -117,6 +119,7 @@ int main(void)
                 break;
             default:
                 printf("Choix invalide (entrez un nombre entre 1 et 6).\n");
+                ui_pause();
         }
     } while (choix != 6);
 

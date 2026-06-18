@@ -23,7 +23,7 @@ int ui_lire_entier(const char *invite)
     if (scanf("%d", &valeur) != 1) {
         valeur = -1;
     }
-    while (getchar() != '\n' && !feof(stdin)) { /* vide le buffer */ }
+    while (getchar() != '\n' && !feof(stdin)) {}
     return valeur;
 }
 
@@ -35,4 +35,10 @@ void ui_lire_chaine(const char *invite, char *dest, int taille)
     } else {
         dest[0] = '\0';
     }
+}
+
+void ui_pause(void)
+{
+    printf("\nAppuyez sur Entree pour continuer...");
+    while (getchar() != '\n' && !feof(stdin)) {}
 }
