@@ -1,14 +1,13 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "ui.h"
 
-/* Version minimale fonctionnelle pour que le programme tourne.
- * TODO (Personne B) : renforcer la validation des saisies (vidage du buffer, etc.). */
-
 void ui_afficher_menu(void)
 {
-    printf("\n=== BIBLIOTHEQUE ===\n");
+    system("clear");
+    printf("=== BIBLIOTHEQUE ===\n");
     printf("1. Ajouter un livre\n");
     printf("2. Afficher tous les livres\n");
     printf("3. Rechercher\n");
