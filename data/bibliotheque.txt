@@ -1,1 +1,35 @@
-1984;George Orwell;1949;0
+1984;George Orwell;1949;1
+Le Petit Prince;Antoine de Saint-Exupery;1943;1
+Dune;Frank Herbert;1965;0
+Fahrenheit 451;Ray Bradbury;1953;1
+L'Etranger;Albert Camus;1942;1
+Le Seigneur des Anneaux;J.R.R. Tolkien;1954;0
+Harry Potter a l'ecole des sorciers;J.K. Rowling;1997;1
+Les Miserables;Victor Hugo;1862;1
+Crime et Chatiment;Fiodor Dostoievski;1866;0
+Le Meilleur des mondes;Aldous Huxley;1932;1
+Madame Bovary;Gustave Flaubert;1857;1
+La Peste;Albert Camus;1947;0
+Don Quichotte;Miguel de Cervantes;1605;1
+Cent ans de solitude;Gabriel Garcia Marquez;1967;1
+Le Comte de Monte-Cristo;Alexandre Dumas;1844;0
+Orgueil et Prejugés;Jane Austen;1813;1
+Guerre et Paix;Leon Tolstoi;1869;0
+Le Vieil Homme et la Mer;Ernest Hemingway;1952;1
+Lolita;Vladimir Nabokov;1955;1
+Le Procès;Franz Kafka;1925;0
+Ulysse;James Joyce;1922;1
+Au coeur des tenebres;Joseph Conrad;1899;1
+Frankenstein;Mary Shelley;1818;0
+Dracula;Bram Stoker;1897;1
+Moby Dick;Herman Melville;1851;1
+Les Hauts de Hurlevent;Emily Bronte;1847;0
+Anna Karenine;Leon Tolstoi;1877;1
+Le Rouge et le Noir;Stendhal;1830;1
+Notre-Dame de Paris;Victor Hugo;1831;0
+Le Nom de la rose;Umberto Eco;1980;1
+Fondation;Isaac Asimov;1951;1
+Neuromancien;William Gibson;1984;0
+Le Pere Goriot;Honore de Balzac;1835;1
+Voyage au bout de la nuit;Louis-Ferdinand Celine;1932;1
+La Metamorphose;Franz Kafka;1915;0

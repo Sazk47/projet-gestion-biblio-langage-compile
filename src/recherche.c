@@ -48,7 +48,6 @@ int recherche_changer_statut(Bibliotheque *b, int index)
     if (index < 0 || index >= b->nb)
         return 0;
 
-    /* bascule disponible <-> emprunte */
     b->livres[index].disponible = !b->livres[index].disponible;
 
     printf("Statut mis a jour : %s est maintenant %s.\n",
